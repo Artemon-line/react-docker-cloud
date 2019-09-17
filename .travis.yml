@@ -6,6 +6,19 @@ services:
 before_install:
   - docker build -t tyra777/react-docker-cloud -f Dockerfile.dev .
 
-
 script:
   - docker run -e CI=true tyra777/react-docker-cloud npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-react-cloud"
+  env: "DockerReactCloud-env"
+  bucket_name: "elasticbeanstalk-us-east-2-224970891124"
+  bucket_path: "docker-react-cloud"
+  on:
+    branch: master
+  access_key_id:
+    secure: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
